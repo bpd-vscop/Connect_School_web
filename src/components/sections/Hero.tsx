@@ -80,8 +80,8 @@ const NewHero = () => {
             <div className="space-y-6">
               <h1 className="heading text-[56px] leading-[1.02] text-gray-900">
                 Ultimate Learning:<br/>
-                Elevate Your <span className="text-purple-600 italic">Academic</span><br/>
-                — and <span className="text-purple-600 italic">Educational</span><br/>
+                Elevate Your <span className="text-purple-600 ">Academic</span><br/>
+                — and <span className="text-purple-600 ">Educational</span><br/>
                 Experience
               </h1>
             </div>

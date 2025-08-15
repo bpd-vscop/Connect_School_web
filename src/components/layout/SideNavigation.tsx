@@ -311,7 +311,7 @@ export default function SideNavigation() {
                   <a
                     href={item.href}
                     className={`block text-[15px] ${
-                      idx === 0 ? "text-purple-600 font-semibold" : "text-gray-600"
+                      idx === 0 ? "text-purple-600 font-bold italic" : "text-gray-600"
                     }`}
                   >
                     <span
