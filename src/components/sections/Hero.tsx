@@ -52,7 +52,7 @@ const NewHero = () => {
   }, [slides.length]);
 
   return (
-    <section id="home" className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-100 relative overflow-hidden pl-64">
+    <section id="home" className="min-h-screen bg-gradient-to-br from-white via-white to-purple-100 relative overflow-hidden pl-64">
       <div className="container mx-auto px-8 py-16 h-screen flex items-center">
         <div className="grid lg:grid-cols-2 gap-16 items-center w-full">
           {/* ---------- Left: Text Column ---------- */}
