@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Typography ---------- */
+:root{
+  --font-ui: 'Manrope', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-display: 'Plus Jakarta Sans', var(--font-ui);
+}
+
+:root {
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.ui {
+  font-family: var(--font-ui);
+}
+
+/* ---------- Glass / pills ---------- */
+.glass {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.22);
+}
+
+.glass-card{
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 8px 32px rgba(31,38,135,0.25);
+}
+
+/* Subtle dotted texture used in CTA */
+.texture-dots{
+  background-image: radial-gradient(rgba(0,0,0,0.06) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar{ width:6px; }
+::-webkit-scrollbar-track{ background:#f1f1f1; }
+::-webkit-scrollbar-thumb{ background:#c1c1c1; border-radius:3px; }
+::-webkit-scrollbar-thumb:hover{ background:#a8a8a8; }

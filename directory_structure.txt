@@ -1,0 +1,51 @@
+﻿C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\dist
+    assets
+    index.html
+    vite.svg
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\public
+    vite.svg
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\Screenshot
+    Screenshot 2025-08-15 014914.png
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src
+    assets
+    components
+    hooks
+    types
+    utils
+    App.css
+    App.tsx
+    index.css
+    main.tsx
+    test.html
+    vite-env.d.ts
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\UI style - images
+    Full website landing poge style.png
+    Landing page - section 1 style.png
+    Landing page - section 2 style.png
+    Landing page - section 3 style.png
+    Landing page - section 4 style.png
+    Landing page - section 5 style.png
+    Landing page - section 6 style.png
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\dist\assets
+    index-4Mv9g_MP.js
+    index-UcAt0rvy.css
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\assets
+    react.svg
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\components
+    layout
+    sections
+    ui
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\hooks
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\types
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\utils
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\components\layout
+    Footer.tsx
+    Navigation.tsx
+    SideNavigation.tsx
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\components\sections
+    CTA.tsx
+    Features.tsx
+    Hero.tsx
+    NewHero.tsx
+    Testimonials.tsx
+C:\Users\redou\OneDrive\Desktop\Codex\connect-school-modern\src\components\ui
