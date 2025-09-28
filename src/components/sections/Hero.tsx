@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -99,7 +99,7 @@ const supportAvatars = [
 const thumbUrl = (src: string, size = 280) =>
   src.replace('w=1400', `w=${size}`).replace('q=80', 'q=70');
 
-const Pill = ({ children, active = false }: { children: React.ReactNode; active?: boolean }) => (
+const Pill = ({ children, active = false }: { children: ReactNode; active?: boolean }) => (
   <div
     className={`px-4 py-2 rounded-full text-xs font-medium backdrop-blur-xl border whitespace-nowrap transition-colors ${
       active
@@ -134,7 +134,7 @@ const Hero = () => {
     const order: number[] = [current];
 
     let offset = 1;
-    while (order.length < 3 && offset < slides.length) {
+    while (order.length < Math.min(3, slides.length) && offset < slides.length) {
       order.push((current + offset) % slides.length);
       offset += 1;
     }
@@ -172,39 +172,39 @@ const Hero = () => {
         {previewOrder.map((slideIndex, position) => {
           const slide = slides[slideIndex];
           const isActive = slideIndex === current;
-          const variants = [
-            {
-              wrapper: 'w-16 h-16 rounded-2xl',
-              opacity: 'opacity-70',
-              elevation: 'shadow-sm',
-              z: 'z-10',
-            },
-            {
-              wrapper: 'w-20 h-20 rounded-3xl',
-              opacity: 'opacity-85',
-              elevation: 'shadow-lg',
-              z: 'z-20',
-            },
-            {
-              wrapper: 'w-24 h-24 rounded-[28px]',
-              opacity: 'opacity-100',
-              elevation: 'shadow-xl',
-              z: 'z-30',
-            },
-          ][position];
+          const scaleMap = [0.82, 0.94, 1.08];
+          const opacityMap = [0.6, 0.85, 1];
+          const zIndexMap = [10, 20, 30];
+          const baseScale = scaleMap[position] ?? scaleMap[scaleMap.length - 1];
+          const hoverScale = baseScale + 0.06;
 
           return (
             <motion.button
               key={`${slide.id}-${position}`}
               layout
-              whileHover={{ y: -6 }}
-              whileTap={{ scale: 0.96 }}
+              layoutId={`preview-${slide.id}`}
+              initial={false}
               onClick={() => handleSelect(slideIndex)}
-              className={`relative overflow-hidden border border-white/60 bg-white/70 backdrop-blur-xl transition-all ${
-                variants.wrapper
-              } ${variants.opacity} ${variants.elevation} ${variants.z} ${
-                isActive ? 'ring-2 ring-purple-500/70' : 'ring-1 ring-white/40'
+              className={`relative flex h-24 w-24 flex-shrink-0 overflow-hidden rounded-[26px] border border-white/60 bg-white/70 backdrop-blur-xl transition-shadow focus:outline-none ${
+                isActive
+                  ? 'ring-2 ring-purple-500/70 shadow-xl'
+                  : 'ring-1 ring-white/40 shadow-md'
               }`}
+              animate={{
+                scale: baseScale,
+                opacity: opacityMap[position] ?? opacityMap[opacityMap.length - 1],
+              }}
+              whileHover={{ scale: hoverScale, y: -6 }}
+              whileTap={{ scale: baseScale * 0.95 }}
+              transition={{
+                layout: { type: 'spring', stiffness: 500, damping: 40 },
+                scale: { type: 'spring', stiffness: 420, damping: 32 },
+                opacity: { duration: 0.3 },
+              }}
+              style={{
+                zIndex: zIndexMap[position] ?? zIndexMap[zIndexMap.length - 1],
+                transformOrigin: 'bottom center',
+              }}
               aria-label={`Show slide ${slide.id}`}
             >
               <img
@@ -360,7 +360,7 @@ const Hero = () => {
                       transition={{ delay: 0.1 }}
                     >
                       {slides[current].pills.map((pill, index) => (
-                        <Pill key={pill} active={index == 0}>
+                        <Pill key={pill} active={index === 0}>
                           {pill}
                         </Pill>
                       ))}
