@@ -359,7 +359,7 @@ export default function SideNavigation() {
                         href={item.href}
                         className={`text-sm px-3 py-2 rounded-full ${
                           idx === 0
-                            ? "text-purple-600 font-semibold bg-purple-50"
+                            ? "text-purple-600 font-bold italic bg-purple-50"
                             : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
                         }`}
                       >
