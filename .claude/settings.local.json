@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "all permissions"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

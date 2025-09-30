@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, useId, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -10,6 +10,12 @@ import {
   Linkedin,
   Youtube,
 } from 'lucide-react';
+
+const AsteriskIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 1L8 15M2 8L14 8M3.5 3.5L12.5 12.5M12.5 3.5L3.5 12.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
 
 type Slide = {
   id: number;
@@ -65,21 +71,6 @@ const slides: Slide[] = [
     },
     pills: ['Comfort First', 'Precision Tools'],
   },
-  {
-    id: 4,
-    image:
-      'https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1400&q=80',
-    profile: {
-      name: 'Ahmed Benali',
-      note: 'Focus Mode helps each learner track progress without distraction.',
-    },
-    product: {
-      title: 'Focus Mode',
-      subtitle: 'Guided study journeys',
-      desc: 'Structure revision with timed sprints, smart reminders, and coach feedback loops.',
-    },
-    pills: ['Focus', 'Results', 'Consistency'],
-  },
 ];
 
 const socialLinks = [
@@ -96,7 +87,7 @@ const supportAvatars = [
   'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=120&q=60',
 ];
 
-const thumbUrl = (src: string, size = 280) =>
+const thumbUrl = (src: string, size = 320) =>
   src.replace('w=1400', `w=${size}`).replace('q=80', 'q=70');
 
 const Pill = ({ children, active = false }: { children: ReactNode; active?: boolean }) => (
@@ -113,10 +104,14 @@ const Pill = ({ children, active = false }: { children: ReactNode; active?: bool
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const rawClipId = useId();
+  const clipPathId = useMemo(() => `hero-cutout-${rawClipId.split(':').join('')}`, [rawClipId]);
+  const clipPathUrl = `url(#${clipPathId})`;
 
   useEffect(() => {
     if (slides.length < 2) {
-      return undefined;
+      return;
     }
 
     const id = window.setInterval(() => {
@@ -126,28 +121,12 @@ const Hero = () => {
     return () => window.clearInterval(id);
   }, []);
 
-  const previewOrder = useMemo(() => {
-    if (!slides.length) {
-      return [] as number[];
-    }
-
-    const order: number[] = [current];
-
-    let offset = 1;
-    while (order.length < Math.min(3, slides.length) && offset < slides.length) {
-      order.push((current + offset) % slides.length);
-      offset += 1;
-    }
-
-    while (order.length < 3) {
-      order.push(order[order.length - 1]);
-    }
-
-    return order.reverse();
-  }, [current]);
+  const previewSlides = useMemo(() => {
+    return slides.slice(0, 3);
+  }, []);
 
   const handleSelect = (index: number) => {
-    setCurrent(index % slides.length);
+    setCurrent(index);
   };
 
   const handlePrev = () => {
@@ -164,113 +143,114 @@ const Hero = () => {
       className="relative min-h-screen bg-gradient-to-br from-white via-white to-purple-100/60 overflow-hidden pl-64"
     >
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-24 -left-24 h-[380px] w-[380px] rounded-full bg-purple-200/20 blur-3xl" />
-        <div className="absolute top-1/3 -right-40 h-[420px] w-[420px] rounded-full bg-purple-300/30 blur-3xl" />
+        <div className="absolute -top-24 -left-24 h-[360px] w-[360px] rounded-full bg-purple-200/20 blur-3xl" />
+        <div className="absolute top-1/4 -right-40 h-[420px] w-[420px] rounded-full bg-purple-300/30 blur-3xl" />
       </div>
 
-      <div className="absolute top-28 left-1/2 z-30 flex -translate-x-1/2 items-end gap-6">
-        {previewOrder.map((slideIndex, position) => {
-          const slide = slides[slideIndex];
-          const isActive = slideIndex === current;
-          const scaleMap = [0.82, 0.94, 1.08];
-          const opacityMap = [0.6, 0.85, 1];
-          const zIndexMap = [10, 20, 30];
-          const baseScale = scaleMap[position] ?? scaleMap[scaleMap.length - 1];
-          const hoverScale = baseScale + 0.06;
-
-          return (
-            <motion.button
-              key={`${slide.id}-${position}`}
-              layout
-              layoutId={`preview-${slide.id}`}
-              initial={false}
-              onClick={() => handleSelect(slideIndex)}
-              className={`relative flex h-24 w-24 flex-shrink-0 overflow-hidden rounded-[26px] border border-white/60 bg-white/70 backdrop-blur-xl transition-shadow focus:outline-none ${
-                isActive
-                  ? 'ring-2 ring-purple-500/70 shadow-xl'
-                  : 'ring-1 ring-white/40 shadow-md'
-              }`}
-              animate={{
-                scale: baseScale,
-                opacity: opacityMap[position] ?? opacityMap[opacityMap.length - 1],
-              }}
-              whileHover={{ scale: hoverScale, y: -6 }}
-              whileTap={{ scale: baseScale * 0.95 }}
-              transition={{
-                layout: { type: 'spring', stiffness: 500, damping: 40 },
-                scale: { type: 'spring', stiffness: 420, damping: 32 },
-                opacity: { duration: 0.3 },
-              }}
-              style={{
-                zIndex: zIndexMap[position] ?? zIndexMap[zIndexMap.length - 1],
-                transformOrigin: 'bottom center',
-              }}
-              aria-label={`Show slide ${slide.id}`}
-            >
-              <img
-                src={thumbUrl(slide.image)}
-                alt={slide.product.title}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/25 to-transparent" />
-            </motion.button>
-          );
-        })}
-      </div>
-
-      <div className="container mx-auto px-6 pb-24 pt-40 lg:px-16">
-        <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)]">
+      <div className="container mx-auto px-6 pb-16 pt-20 lg:px-16">
+        <div className="grid items-start gap-16 lg:grid-cols-[minmax(0,560px)_minmax(0,1fr)] lg:gap-20">
           <motion.div
-            className="space-y-8"
-            initial={{ opacity: 0, x: -40 }}
+            className="flex flex-col gap-10"
+            initial={{ opacity: 0, x: -36 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <div className="inline-flex items-center gap-3 rounded-full bg-purple-100/60 px-4 py-2 text-xs font-semibold text-purple-600">
-              <span className="inline-block h-2 w-2 rounded-full bg-purple-500" />
-              Live learning that feels personal
+            <div className="flex items-end justify-between gap-4">
+              <div className="inline-flex items-center gap-3 rounded-full bg-purple-100/60 px-4 py-2 text-xs font-semibold text-purple-600">
+                <span className="inline-block h-2 w-2 rounded-full bg-purple-500" />
+                Live learning that feels personal
+              </div>
+
+              <div className="relative flex items-end gap-4">
+                {previewSlides.map((slide, index) => {
+                  const sizes = [
+                    { size: 'h-[64px] w-[64px]', rounded: 'rounded-[18px]', width: 64 },
+                    { size: 'h-[80px] w-[80px]', rounded: 'rounded-[22px]', width: 80 },
+                    { size: 'h-[96px] w-[96px]', rounded: 'rounded-[26px]', width: 96 }
+                  ];
+                  const { size, rounded, width } = sizes[index];
+
+                  // Calculate cumulative left position for the indicator
+                  const getIndicatorLeft = (idx: number) => {
+                    if (idx === 0) return width / 2;
+                    if (idx === 1) return sizes[0].width + 16 + width / 2;
+                    return sizes[0].width + sizes[1].width + 32 + width / 2;
+                  };
+
+                  return (
+                    <div key={slide.id} className="relative flex flex-col items-center">
+                      {hoveredIndex === null && current === index && (
+                        <motion.div
+                          layoutId="slide-indicator"
+                          className="mb-2 text-purple-500"
+                          initial={false}
+                          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        >
+                          <AsteriskIcon />
+                        </motion.div>
+                      )}
+                      {hoveredIndex === null && current !== index && (
+                        <div className="mb-2 h-4 w-4"></div>
+                      )}
+                      <button
+                        onClick={() => handleSelect(index)}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                        className={`relative ${size} ${rounded} overflow-hidden transition-all border-2 ${
+                          current === index
+                            ? 'border-purple-500 shadow-lg ring-2 ring-purple-500 ring-offset-2'
+                            : 'border-white/60 hover:border-purple-300 hover:shadow-md'
+                        }`}
+                      >
+                        <img
+                          src={thumbUrl(slide.image)}
+                          alt={slide.product.title}
+                          className="h-full w-full object-cover"
+                        />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="space-y-6">
-              <h1 className="text-4xl font-semibold leading-tight text-gray-900 sm:text-5xl lg:text-[56px] lg:leading-[1.05]">
+              <h1 className="text-4xl font-semibold leading-snug text-gray-900 sm:text-5xl lg:text-[56px] lg:leading-[1.05]">
                 Ultimate Learning:
                 <br />
                 Elevate your <span className="text-purple-600">academic</span> and
                 <br />
                 <span className="text-purple-600">creative</span> experience
               </h1>
+
               <p className="max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
-                Connect School blends curated resources, coaching, and collaborative workspaces into one flow.
-                Discover tools that adapt to every learner and keep momentum high.
+                Connect School blends curated resources, coaching, and collaborative workspaces into one flow. Discover
+                tools that adapt to every learner and keep momentum high.
               </p>
             </div>
 
-            <motion.a
-              href="#features"
-              className="group inline-flex items-center gap-3 rounded-full border border-purple-200/60 bg-white/80 px-6 py-3 text-sm font-medium text-purple-700 shadow-sm transition-colors hover:border-purple-400 hover:text-purple-800"
-              whileHover={{ x: 6 }}
-            >
-              Explore features
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-600 text-white transition-transform group-hover:translate-x-1">
-                <ArrowRight className="h-4 w-4" />
-              </span>
-            </motion.a>
-
             <div className="flex flex-wrap items-center gap-6">
+              <motion.a
+                href="#features"
+                className="group inline-flex items-center gap-3 rounded-full border border-purple-200/60 bg-white/80 px-6 py-3 text-sm font-medium text-purple-700 shadow-sm transition-colors hover:border-purple-400 hover:text-purple-800"
+                whileHover={{ x: 6 }}
+              >
+                Explore features
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-600 text-white transition-transform group-hover:translate-x-1">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </motion.a>
+
               <div className="flex -space-x-3">
                 {supportAvatars.map((src) => (
-                  <img
-                    key={src}
-                    src={src}
-                    alt="Learner"
-                    className="h-10 w-10 rounded-full border-2 border-white object-cover"
-                  />
+                  <img key={src} src={src} alt="Learner" className="h-10 w-10 rounded-full border-2 border-white object-cover" />
                 ))}
               </div>
               <div className="space-y-1 text-sm">
                 <div className="font-semibold text-gray-900">24 coaches ready today</div>
                 <p className="text-gray-500">Join a live onboarding session in less than 10 minutes.</p>
               </div>
+
               <motion.button
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition-transform hover:translate-y-[-2px]"
                 whileHover={{ scale: 1.03 }}
@@ -283,57 +263,73 @@ const Hero = () => {
           </motion.div>
 
           <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 40 }}
+            className="relative flex h-[65vh] w-full max-w-[600px] justify-center lg:h-[90vh]"
+            initial={{ opacity: 0, x: 36 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
           >
-            <div className="relative">
-              <div className="pointer-events-none absolute -top-24 right-6 h-40 w-40 rounded-full bg-white" />
+            <svg className="absolute h-0 w-0">
+              <defs>
+                <clipPath id={clipPathId} clipPathUnits="objectBoundingBox">
+                  <path d="M 0.08,0 H 0.92 C 0.96,0 1,0.04 1,0.08 V 0.92 C 1,0.96 0.96,1 0.92,1 H 0.08 C 0.04,1 0,0.96 0,0.92 V 0.08 C 0,0.04 0.04,0 0.08,0 Z M 0.25,0 C 0.25,0.02 0.23,0.04 0.21,0.04 C 0.12,0.04 0.04,0.02 0.04,0.02 M 0.75,0 C 0.75,0.02 0.77,0.04 0.79,0.04 C 0.88,0.04 0.96,0.02 0.96,0.02" />
+                </clipPath>
+              </defs>
+            </svg>
 
-              <div className="absolute -top-16 right-4 z-40 flex items-center gap-4 rounded-full border border-white/70 bg-white/95 px-5 py-3 shadow-2xl">
-                <div className="flex items-center gap-2">
-                  {socialLinks.map(({ id, icon: Icon, label }) => (
-                    <motion.button
-                      key={id}
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-100 text-purple-600 transition-colors hover:bg-purple-600 hover:text-white"
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.96 }}
-                      aria-label={label}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </motion.button>
-                  ))}
+            <div className="relative h-full w-full max-w-[560px]">
+              <div
+                className="relative h-full w-full overflow-hidden bg-white/40 shadow-[0_30px_80px_rgba(168,85,247,0.25)] ring-1 ring-purple-200/40 backdrop-blur"
+                style={{ clipPath: clipPathUrl, WebkitClipPath: clipPathUrl }}
+              >
+                <div className="absolute top-6 left-0 right-0 z-30 flex items-center justify-between px-6">
+                  <motion.div
+                    className="flex items-center gap-2 rounded-full border border-white/70 bg-white/95 px-5 py-3 shadow-2xl"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.25, duration: 0.45 }}
+                  >
+                    {socialLinks.map(({ id, icon: Icon, label }) => (
+                      <motion.button
+                        key={id}
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-100 text-purple-600 transition-colors hover:bg-purple-600 hover:text-white"
+                        whileHover={{ scale: 1.08 }}
+                        whileTap={{ scale: 0.94 }}
+                        aria-label={label}
+                      >
+                        <Icon className="h-4 w-4" />
+                      </motion.button>
+                    ))}
+                  </motion.div>
+
+                  <motion.button
+                    className="rounded-full bg-gradient-to-r from-purple-600 to-purple-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/30"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.45 }}
+                  >
+                    Sign up
+                  </motion.button>
                 </div>
-                <motion.button
-                  className="rounded-full bg-gradient-to-r from-purple-600 to-purple-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-500/30"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Sign up
-                </motion.button>
-              </div>
 
-              <div className="relative overflow-hidden rounded-[44px] bg-white/40 shadow-[0_30px_80px_rgba(168,85,247,0.25)] ring-1 ring-purple-200/50 backdrop-blur">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={slides[current].id}
+                    className="absolute inset-0"
                     initial={{ opacity: 0, scale: 1.02 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.98 }}
                     transition={{ duration: 0.6 }}
-                    className="relative"
                   >
                     <img
                       src={slides[current].image}
                       alt={slides[current].product.title}
-                      className="h-[540px] w-full object-cover"
+                      className="h-full w-full object-cover"
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-purple-700/30 via-transparent to-purple-300/20" />
 
                     <motion.div
-                      className="absolute right-6 top-6 max-w-[320px] rounded-2xl border border-white/50 bg-white/90 px-5 py-4 shadow-xl"
+                      className="absolute right-6 top-20 max-w-[320px] rounded-2xl border border-white/50 bg-white/90 px-5 py-4 shadow-xl"
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
@@ -367,7 +363,7 @@ const Hero = () => {
                     </motion.div>
 
                     <motion.div
-                      className="absolute left-6 bottom-6 max-w-[290px] rounded-2xl border border-white/60 bg-white/92 p-4 shadow-xl"
+                      className="absolute left-6 bottom-6 max-w-[300px] rounded-2xl border border-white/60 bg-white/92 p-4 shadow-xl"
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.15 }}
