@@ -4,10 +4,10 @@ import { Instagram, Globe, X as XIcon } from "lucide-react";
 
 /**
  * Sliding-door nav with directional control + hero stretch:
- * - Down: 0→30% hero => vertical column slides LEFT from separator; at 30% topbar pill bounces in and persists.
- * - Up: pill fades out from 33%→31%; ONLY below 31% does the vertical door start sliding back in.
+ * - Down: 0→15% hero => vertical column slides LEFT from separator; at 15% topbar pill bounces in and persists.
+ * - Up: pill fades out from 18%→16%; ONLY below 16% does the vertical door start sliding back in.
  * - Hero left padding tracks the door continuously (stretches with closing/opening).
- * - Separator moves with the door; visible in vertical state and while returning (31%→30%) on up.
+ * - Separator moves with the door; visible in vertical state and while returning (16%→15%) on up.
  * - Socials + Join + Sign up appear ONLY in the horizontal pill.
  */
 
@@ -55,10 +55,10 @@ const SLAB_HEIGHT = 220;   // grid slab height behind logo
 const SEPARATOR_GAP = 24;  // top/bottom gap for separator
 
 // Thresholds (fractions of hero height)
-const THRESH_SHOW   = 0.30; // topbar appears at 30% on DOWN; unmounts below 30% on UP
-const FADE_START    = 0.33; // pill starts fading out (on UP) at 33%
-const FADE_END      = 0.31; // pill fully faded by 31% (before door return starts)
-const RETURN_START  = 0.31; // door begins to slide back in only below 31%
+const THRESH_SHOW   = 0.15; // topbar appears at 15% on DOWN; unmounts below 15% on UP
+const FADE_START    = 0.18; // pill starts fading out (on UP) at 18%
+const FADE_END      = 0.16; // pill fully faded by 16% (before door return starts)
+const RETURN_START  = 0.16; // door begins to slide back in only below 16%
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
@@ -92,6 +92,9 @@ export default function SideNavigation() {
   const prevTopbarRef = useRef(false);
   const prevScrollYRef = useRef(0);
   const [bounceKey, setBounceKey] = useState(0);   // re-mount pill to re-trigger bounce
+  const rafIdRef = useRef<number | null>(null);
+  const doorDivRef = useRef<HTMLDivElement>(null);
+  const separatorDivRef = useRef<HTMLDivElement>(null);
 
   const logoConfig: LogoConfig = {
     type: "image_url",
@@ -118,57 +121,76 @@ export default function SideNavigation() {
     };
 
     const onScrollResize = () => {
-      measureHero();
+      // Cancel any pending RAF
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
 
-      const y = window.scrollY;
-      const prevY = prevScrollYRef.current;
-      const down = y > prevY;
-      prevScrollYRef.current = y;
-      setIsDown(down);
+      rafIdRef.current = requestAnimationFrame(() => {
+        measureHero();
 
-      const top = heroTopRef.current;
-      const height = heroHeightRef.current;
+        const y = window.scrollY;
+        const prevY = prevScrollYRef.current;
+        const down = y > prevY;
+        prevScrollYRef.current = y;
+        setIsDown(down);
 
-      const progress = Math.min(Math.max(y - top, 0), height);
-      setProgressPx(progress);
+        const top = heroTopRef.current;
+        const height = heroHeightRef.current;
 
-      // vertical menu height shrinks with progress
-      setNavH(Math.max(height - progress, 0));
+        const progress = Math.min(Math.max(y - top, 0), height);
+        setProgressPx(progress);
 
-      // --- compute door position for hero padding (so hero stretches with it) ---
-      const px30 = height * THRESH_SHOW;
-      const px31 = height * RETURN_START;
+        // vertical menu height shrinks with progress
+        setNavH(Math.max(height - progress, 0));
 
-      let visibleWidthPx = 0;
+        // --- compute door position for hero padding (so hero stretches with it) ---
+        const px30 = height * THRESH_SHOW;
+        const px31 = height * RETURN_START;
 
-      if (down) {
-        // DOWN: door slides out from 0 -> 30%
-        const ratio = Math.min(progress / Math.max(px30, 1), 1);
-        const doorX = -NAV_WIDTH_PX * easeOutCubic(ratio); // negative
-        const separatorLeft = Math.max(0, NAV_WIDTH_PX + doorX);
-        visibleWidthPx = separatorLeft; // hero padding equals door's visible width
-      } else {
-        // UP: hold closed (padding=0) until 31%, then slide back 31% -> 0
-        if (progress >= px31) {
-          visibleWidthPx = 0;
-        } else {
-          const ratioBack = Math.min(Math.max(progress / Math.max(px31, 1), 0), 1);
-          const doorX = -NAV_WIDTH_PX * easeOutCubic(ratioBack);
+        let visibleWidthPx = 0;
+        let doorX = 0;
+
+        if (down) {
+          // DOWN: door slides out from 0 -> 15%
+          const ratio = Math.min(progress / Math.max(px30, 1), 1);
+          doorX = -NAV_WIDTH_PX * easeOutCubic(ratio); // negative
           const separatorLeft = Math.max(0, NAV_WIDTH_PX + doorX);
-          visibleWidthPx = separatorLeft;
+          visibleWidthPx = separatorLeft; // hero padding equals door's visible width
+        } else {
+          // UP: hold closed (padding=0) until 16%, then slide back 16% -> 0
+          if (progress >= px31) {
+            visibleWidthPx = 0;
+            doorX = -NAV_WIDTH_PX;
+          } else {
+            const ratioBack = Math.min(Math.max(progress / Math.max(px31, 1), 0), 1);
+            doorX = -NAV_WIDTH_PX * easeOutCubic(ratioBack);
+            const separatorLeft = Math.max(0, NAV_WIDTH_PX + doorX);
+            visibleWidthPx = separatorLeft;
+          }
         }
-      }
 
-      setHeroPaddingPx(visibleWidthPx);
+        // Use transform instead of re-rendering for smoother animation
+        if (doorDivRef.current) {
+          doorDivRef.current.style.transform = `translateX(${doorX}px)`;
+        }
 
-      // toggle topbar strictly at 30%
-      const shouldTopbar = progress >= px30;
-      if (!prevTopbarRef.current && shouldTopbar && down) {
-        setBounceKey((k) => k + 1); // bounce only when entering while scrolling down
-      }
-      prevTopbarRef.current = shouldTopbar;
+        const separatorLeft = Math.max(0, NAV_WIDTH_PX + doorX);
+        if (separatorDivRef.current) {
+          separatorDivRef.current.style.left = `${separatorLeft}px`;
+        }
 
-      setTopbar(shouldTopbar);
+        setHeroPaddingPx(visibleWidthPx);
+
+        // toggle topbar strictly at 15%
+        const shouldTopbar = progress >= px30;
+        if (!prevTopbarRef.current && shouldTopbar && down) {
+          setBounceKey((k) => k + 1); // bounce only when entering while scrolling down
+        }
+        prevTopbarRef.current = shouldTopbar;
+
+        setTopbar(shouldTopbar);
+      });
     };
 
     // init
@@ -177,40 +199,44 @@ export default function SideNavigation() {
     window.addEventListener("scroll", onScrollResize, { passive: true });
     window.addEventListener("resize", onScrollResize);
     return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
       window.removeEventListener("scroll", onScrollResize);
       window.removeEventListener("resize", onScrollResize);
       hero.style.paddingLeft = "0px";
     };
   }, []);
 
-  // --- Sliding door transform for the visual panel (matches hero padding math) ---
-  const doorX = useMemo(() => {
+  // Separator position and height
+  const separatorHeight = Math.max(navH - SEPARATOR_GAP * 2, 0);
+  const separatorLeft = useMemo(() => {
     const height = Math.max(heroH, 1);
     const px30 = height * THRESH_SHOW;
     const px31 = height * RETURN_START;
 
+    let doorX = 0;
     if (isDown) {
-      // DOWN: 0 -> 30%
       const ratio = Math.min(progressPx / Math.max(px30, 1), 1);
-      return -NAV_WIDTH_PX * easeOutCubic(ratio);
+      doorX = -NAV_WIDTH_PX * easeOutCubic(ratio);
+    } else {
+      if (progressPx >= px31) {
+        doorX = -NAV_WIDTH_PX;
+      } else {
+        const ratioBack = Math.min(Math.max(progressPx / Math.max(px31, 1), 0), 1);
+        doorX = -NAV_WIDTH_PX * easeOutCubic(ratioBack);
+      }
     }
-    // UP: hold closed until 31%, then slide back 31% -> 0
-    if (progressPx >= px31) return -NAV_WIDTH_PX;
-    const ratioBack = Math.min(Math.max(progressPx / Math.max(px31, 1), 0), 1);
-    return -NAV_WIDTH_PX * easeOutCubic(ratioBack);
+    return Math.max(0, NAV_WIDTH_PX + doorX);
   }, [heroH, isDown, progressPx]);
 
-  // Separator follows door (at its right edge)
-  const separatorLeft = Math.max(0, NAV_WIDTH_PX + doorX);
-  const separatorHeight = Math.max(navH - SEPARATOR_GAP * 2, 0);
-
-  // Show separator in vertical state, and during return band (31%→30%) when scrolling UP
+  // Show separator in vertical state, and during return band (16%→15%) when scrolling UP
   const showSeparator =
     !topbar || (topbar && !isDown && progressPx < heroH * RETURN_START);
 
   // --- Pill opacity ---
-  // Down: fully visible once topbar is active (≥30%).
-  // Up: fade 33%→31%, then fully gone by 31% (before door starts to return).
+  // Down: fully visible once topbar is active (≥15%).
+  // Up: fade 18%→16%, then fully gone by 16% (before door starts to return).
   const fadeStartPx = heroH * FADE_START;
   const fadeEndPx = heroH * FADE_END;
   let pillOpacity = 1;
@@ -218,9 +244,9 @@ export default function SideNavigation() {
     if (progressPx >= fadeStartPx) {
       pillOpacity = 1;
     } else if (progressPx > fadeEndPx) {
-      pillOpacity = (progressPx - fadeEndPx) / (fadeStartPx - fadeEndPx); // 1 @33% -> 0 @31%
+      pillOpacity = (progressPx - fadeEndPx) / (fadeStartPx - fadeEndPx); // 1 @18% -> 0 @16%
     } else {
-      pillOpacity = 0; // ≤31%
+      pillOpacity = 0; // ≤16%
     }
   } else {
     pillOpacity = 1; // DOWN: persist once shown
@@ -239,24 +265,19 @@ export default function SideNavigation() {
     <>
       <div className={wrapperClasses}>
         {/* Moving separator (no top/bottom connection) */}
-        <AnimatePresence>
-          {showSeparator && separatorHeight > 0 && (
-            <motion.div
-              key="separator"
-              className="fixed bg-gray-200"
-              style={{
-                left: separatorLeft,
-                top: SEPARATOR_GAP,
-                width: 1,
-                height: separatorHeight,
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            />
-          )}
-        </AnimatePresence>
+        {showSeparator && separatorHeight > 0 && (
+          <div
+            ref={separatorDivRef}
+            className="fixed bg-gray-200 transition-opacity duration-150"
+            style={{
+              left: separatorLeft,
+              top: SEPARATOR_GAP,
+              width: 1,
+              height: separatorHeight,
+              willChange: "left",
+            }}
+          />
+        )}
 
         {/* OUTER NAV: transparent; full-width in topbar to center the pill */}
         <motion.nav
@@ -270,7 +291,8 @@ export default function SideNavigation() {
           }}
         >
           {/* Vertical column (slides with scroll; always mounted) */}
-          <motion.div
+          <div
+            ref={doorDivRef}
             className="relative"
             style={{
               width: NAV_WIDTH_PX,
@@ -279,12 +301,7 @@ export default function SideNavigation() {
               left: 0,
               top: 0,
               pointerEvents: topbar ? "none" : "auto",
-            }}
-            animate={{ x: doorX }}
-            transition={{
-              type: "tween",
-              duration: 0.12,
-              ease: [0.22, 0.61, 0.36, 1],
+              willChange: "transform",
             }}
           >
             {/* Grid slab behind logo */}
@@ -327,9 +344,9 @@ export default function SideNavigation() {
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
-          {/* Horizontal pill (bounce on down at 30%; fades out 33%→31% on up; persists otherwise) */}
+          {/* Horizontal pill (bounce on down at 15%; fades out 18%→16% on up; persists otherwise) */}
           <AnimatePresence>
             {topbar && (
               <motion.div
