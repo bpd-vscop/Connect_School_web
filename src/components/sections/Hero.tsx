@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useId, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, useId, useRef, type ReactNode } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -105,21 +105,36 @@ const Pill = ({ children, active = false }: { children: ReactNode; active?: bool
 const Hero = () => {
   const [current, setCurrent] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const intervalRef = useRef<number | null>(null);
   const rawClipId = useId();
   const clipPathId = useMemo(() => `hero-cutout-${rawClipId.split(':').join('')}`, [rawClipId]);
   const clipPathUrl = `url(#${clipPathId})`;
 
-  useEffect(() => {
+  const startAutoCycle = useCallback(() => {
+    if (intervalRef.current !== null) {
+      window.clearInterval(intervalRef.current);
+    }
+
     if (slides.length < 2) {
+      intervalRef.current = null;
       return;
     }
 
-    const id = window.setInterval(() => {
+    intervalRef.current = window.setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 6500);
-
-    return () => window.clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    startAutoCycle();
+
+    return () => {
+      if (intervalRef.current !== null) {
+        window.clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [startAutoCycle]);
 
   const previewSlides = useMemo(() => {
     return slides.slice(0, 3);
@@ -127,14 +142,17 @@ const Hero = () => {
 
   const handleSelect = (index: number) => {
     setCurrent(index);
+    startAutoCycle();
   };
 
   const handlePrev = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+    startAutoCycle();
   };
 
   const handleNext = () => {
     setCurrent((prev) => (prev + 1) % slides.length);
+    startAutoCycle();
   };
 
   return (
@@ -177,9 +195,12 @@ const Hero = () => {
                     return sizes[0].width + sizes[1].width + 32 + width / 2;
                   };
 
+                  const indicatorActive =
+                    hoveredIndex !== null ? hoveredIndex === index : current === index;
+
                   return (
                     <div key={slide.id} className="relative flex flex-col items-center">
-                      {hoveredIndex === null && current === index && (
+                      {indicatorActive ? (
                         <motion.div
                           layoutId="slide-indicator"
                           className="mb-2 text-purple-500"
@@ -188,8 +209,7 @@ const Hero = () => {
                         >
                           <AsteriskIcon />
                         </motion.div>
-                      )}
-                      {hoveredIndex === null && current !== index && (
+                      ) : (
                         <div className="mb-2 h-4 w-4"></div>
                       )}
                       <button

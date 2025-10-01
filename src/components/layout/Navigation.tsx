@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe, User, BookOpen } from 'lucide-react';
+import { useSideNavLayout } from '../../context/SideNavLayoutContext';
 
 const Navigation = () => {
+  const { offset } = useSideNavLayout();
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState('FR');
 
@@ -18,14 +20,17 @@ const Navigation = () => {
   const languages = ['FR', 'EN', 'AR'];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-white/20">
+    <nav
+      className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-white/20"
+      style={{ paddingInlineStart: offset, transition: 'padding-inline-start 0.24s ease-out' }}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div 
+          <motion.div
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
           >
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-lavender-400 rounded-xl flex items-center justify-center">
               <BookOpen className="w-6 h-6 text-white" />
@@ -74,9 +79,9 @@ const Navigation = () => {
 
             <motion.button
               className="px-6 py-2 bg-gradient-to-r from-purple-600 to-lavender-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-200"
-              whileHover={{ 
+              whileHover={{
                 scale: 1.05,
-                boxShadow: "0 10px 25px rgba(168, 85, 247, 0.3)"
+                boxShadow: '0 10px 25px rgba(168, 85, 247, 0.3)'
               }}
               whileTap={{ scale: 0.95 }}
             >
@@ -101,7 +106,7 @@ const Navigation = () => {
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
               className="lg:hidden overflow-hidden"
@@ -118,7 +123,7 @@ const Navigation = () => {
                     {item.name}
                   </motion.a>
                 ))}
-                
+
                 <div className="border-t border-gray-200 pt-3 mt-3">
                   <div className="flex items-center justify-between px-3 py-2">
                     <span className="text-sm text-gray-600">Langue</span>
@@ -127,18 +132,14 @@ const Navigation = () => {
                         <button
                           key={lang}
                           onClick={() => setCurrentLang(lang)}
-                          className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                            currentLang === lang
-                              ? 'bg-purple-100 text-purple-600'
-                              : 'text-gray-600 hover:bg-gray-100'
-                          }`}
+                          className={`px-2 py-1 text-xs rounded ${currentLang === lang ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700'} hover:bg-purple-500 hover:text-white transition-colors`}
                         >
                           {lang}
                         </button>
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2 px-3 pb-2">
                     <button className="w-full px-4 py-2 text-purple-600 border border-purple-200 rounded-lg font-medium hover:bg-purple-50 transition-colors">
                       Connexion
