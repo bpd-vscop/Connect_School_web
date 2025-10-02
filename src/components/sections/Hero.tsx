@@ -186,14 +186,7 @@ const Hero = () => {
                     { size: 'h-[80px] w-[80px]', rounded: 'rounded-[22px]', width: 80 },
                     { size: 'h-[96px] w-[96px]', rounded: 'rounded-[26px]', width: 96 }
                   ];
-                  const { size, rounded, width } = sizes[index];
-
-                  // Calculate cumulative left position for the indicator
-                  const getIndicatorLeft = (idx: number) => {
-                    if (idx === 0) return width / 2;
-                    if (idx === 1) return sizes[0].width + 16 + width / 2;
-                    return sizes[0].width + sizes[1].width + 32 + width / 2;
-                  };
+                  const { size, rounded } = sizes[index];
 
                   const indicatorActive =
                     hoveredIndex !== null ? hoveredIndex === index : current === index;

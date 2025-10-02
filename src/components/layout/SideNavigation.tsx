@@ -98,7 +98,7 @@ export default function SideNavigation() {
 
   const logoConfig: LogoConfig = {
     type: "image_url",
-    content: "https://i.postimg.cc/PrXQ449V/image-removebg-preview.png",
+    content: "/logo.svg",
     alt: "Connect School Logo",
   };
 
@@ -312,12 +312,9 @@ export default function SideNavigation() {
             />
 
             {/* Logo + brand */}
-            <div className="absolute top-8 w-full flex flex-col items-center gap-3">
-              <div className="w-24 h-24 rounded-xl grid place-items-center">
+            <div className="absolute top-12 w-full flex flex-col items-center gap-3">
+              <div className="w-32 h-32 place-items-center">
                 <ConfigurableLogo className="w-32 h-32" config={logoConfig} />
-              </div>
-              <div className="ui text-[15px] font-semibold text-gray-800">
-                Connect School
               </div>
             </div>
 
