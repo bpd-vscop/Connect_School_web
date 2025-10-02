@@ -102,6 +102,12 @@ export default function SideNavigation() {
     alt: "Connect School Logo",
   };
 
+  const iconConfig: LogoConfig = {
+    type: "image_url",
+    content: "/icon.svg",
+    alt: "Connect School Icon",
+  };
+
   useEffect(() => {
     heroElRef.current = document.querySelector<HTMLElement>("#home") || null;
     const hero = heroElRef.current;
@@ -362,7 +368,7 @@ export default function SideNavigation() {
               >
                 {/* Logo */}
                 <div className="w-10 h-10 rounded-xl grid place-items-center">
-                  <ConfigurableLogo className="w-10 h-10" config={logoConfig} />
+                  <ConfigurableLogo className="w-10 h-10" config={iconConfig} />
                 </div>
 
                 {/* Menu */}
