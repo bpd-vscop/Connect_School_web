@@ -76,7 +76,6 @@ const slides: Slide[] = [
 const socialLinks = [
   { id: 'facebook', icon: Facebook, label: 'Facebook' },
   { id: 'instagram', icon: Instagram, label: 'Instagram' },
-  { id: 'youtube', icon: Youtube, label: 'YouTube' },
   { id: 'linkedin', icon: Linkedin, label: 'LinkedIn' },
 ];
 
@@ -286,54 +285,69 @@ const Hero = () => {
             <svg className="absolute h-0 w-0">
               <defs>
                 <clipPath id={clipPathId} clipPathUnits="objectBoundingBox">
-                  <path d="M 0.08,0 H 0.92 C 0.96,0 1,0.04 1,0.08 V 0.92 C 1,0.96 0.96,1 0.92,1 H 0.08 C 0.04,1 0,0.96 0,0.92 V 0.08 C 0,0.04 0.04,0 0.08,0 Z M 0.25,0 C 0.25,0.02 0.23,0.04 0.21,0.04 C 0.12,0.04 0.04,0.02 0.04,0.02 M 0.75,0 C 0.75,0.02 0.77,0.04 0.79,0.04 C 0.88,0.04 0.96,0.02 0.96,0.02" />
+                  <path d="M 0.9773 0.1518 L 0.9773 0.9297 C 0.9773 0.9590 0.9467 0.9831 0.9088 0.9831 L 0.0912 0.9831 C 0.0534 0.9831 0.0227 0.9590 0.0227 0.9297 L 0.0227 0.1205 C 0.0227 0.0912 0.0534 0.0671 0.0912 0.0671 L 0.1968 0.0671 C 0.2106 0.0671 0.2226 0.0671 0.2226 0.0671 C 0.2364 0.0671 0.2475 0.0580 0.2472 0.0469 C 0.2468 0.0299 0.2639 0.0169 0.2850 0.0169 L 0.7036 0.0169 C 0.7359 0.0169 0.7623 0.0373 0.7623 0.0624 L 0.7623 0.0767 C 0.7623 0.0893 0.7755 0.0994 0.7917 0.0994 L 0.9088 0.0994 C 0.9467 0.0994 0.9773 0.1236 0.9773 0.1518 Z" />
                 </clipPath>
               </defs>
             </svg>
 
             <div className="relative h-full w-full max-w-[700px]">
+              {/*
+                Social icons container - positioned horizontally at top
+                Position: left-6 (horizontal), top-[-20px] (vertical - negative moves up outside frame)
+                Container size: px-4 (horizontal padding), py-2.5 (vertical padding)
+                Gap between icons: gap-2
+              */}
+              <motion.div
+                className="absolute left-6 top-[6px] z-40 flex items-center gap-2 py-2.5"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.45 }}
+              >
+                {socialLinks.map(({ id, icon: Icon, label }) => (
+                  <motion.button
+                    key={id}
+                    /*
+                      Individual icon button size: h-9 w-9 (36px x 36px)
+                      Icon size inside: h-4 w-4 (16px x 16px)
+                    */
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-100 text-purple-600 transition-colors hover:bg-purple-600 hover:text-white"
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.94 }}
+                    aria-label={label}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </motion.button>
+                ))}
+              </motion.div>
+
+              {/*
+                Sign up button - positioned at top right
+                Position: right-6 (horizontal from right), top-[-20px] (vertical - negative moves up outside frame)
+                Button size: px-7 (horizontal padding), py-3 (vertical padding)
+                Text size: text-sm
+              */}
+              <motion.button
+                className="absolute right-6 top-[6px] z-40 rounded-[30px] bg-gradient-to-r from-purple-600 to-purple-500 px-9 py-6 text-sm font-semibold text-white shadow-lg shadow-purple-500/30"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.45 }}
+              >
+                Sign up
+              </motion.button>
+
               <div
                 className="relative h-full w-full overflow-hidden bg-white/40 shadow-[0_30px_80px_rgba(168,85,247,0.25)] ring-1 ring-purple-200/40 backdrop-blur"
                 style={{ clipPath: clipPathUrl, WebkitClipPath: clipPathUrl }}
               >
-                <div className="absolute top-6 left-0 right-0 z-30 flex items-center justify-between px-6">
-                  <motion.div
-                    className="flex items-center gap-2 rounded-full border border-white/70 bg-white/95 px-5 py-3 shadow-2xl"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25, duration: 0.45 }}
-                  >
-                    {socialLinks.map(({ id, icon: Icon, label }) => (
-                      <motion.button
-                        key={id}
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-100 text-purple-600 transition-colors hover:bg-purple-600 hover:text-white"
-                        whileHover={{ scale: 1.08 }}
-                        whileTap={{ scale: 0.94 }}
-                        aria-label={label}
-                      >
-                        <Icon className="h-4 w-4" />
-                      </motion.button>
-                    ))}
-                  </motion.div>
 
-                  <motion.button
-                    className="rounded-full bg-gradient-to-r from-purple-600 to-purple-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/30"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.45 }}
-                  >
-                    Sign up
-                  </motion.button>
-                </div>
-
-                <AnimatePresence mode="wait">
+                <AnimatePresence initial={false}>
                   <motion.div
                     key={slides[current].id}
                     className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 1.02 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.6 }}
+                    initial={{ x: '100%' }}
+                    animate={{ x: 0 }}
+                    exit={{ x: '-100%' }}
+                    transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
                   >
                     <img
                       src={slides[current].image}
@@ -342,6 +356,7 @@ const Hero = () => {
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-purple-700/30 via-transparent to-purple-300/20" />
+                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/40 via-black/20 to-transparent pointer-events-none z-10" />
 
                     <motion.div
                       className="absolute right-6 top-20 max-w-[320px] rounded-2xl border border-white/50 bg-white/90 px-5 py-4 shadow-xl"
