@@ -22,7 +22,7 @@ const CTA = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-600 via-lavender-500 to-purple-700 relative overflow-hidden pl-64">
+    <section className="py-20 bg-gradient-to-br from-purple-600 via-lavender-500 to-purple-700 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         {/* Animated background shapes */}

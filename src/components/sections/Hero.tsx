@@ -158,7 +158,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-gradient-to-br from-white via-white to-purple-100/60 overflow-hidden pl-64"
+      className="relative min-h-screen bg-gradient-to-br from-white via-white to-purple-100/60 overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-24 -left-24 h-[360px] w-[360px] rounded-full bg-purple-200/20 blur-3xl" />

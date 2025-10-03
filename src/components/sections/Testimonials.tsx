@@ -76,7 +76,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-lavender-50 to-white relative overflow-hidden pl-64">
+    <section className="py-20 bg-gradient-to-br from-purple-50 via-lavender-50 to-white relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-purple-200/30 to-lavender-200/30 rounded-full blur-3xl"></div>
