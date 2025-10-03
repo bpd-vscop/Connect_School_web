@@ -158,7 +158,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-gradient-to-br from-white via-white to-purple-100/60 overflow-hidden"
+      className="relative py-20 bg-gradient-to-br from-white via-white to-purple-100/60 overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-24 -left-24 h-[360px] w-[360px] rounded-full bg-purple-200/20 blur-3xl" />
@@ -167,8 +167,8 @@ const Hero = () => {
 
       {/* Centered container that accounts for side navigation */}
       <div className="relative w-full h-full flex justify-center">
-        <div className="w-full max-w-7xl pb-10 pt-10 ">
-        <div className="grid items-start gap-16 lg:grid-cols-[minmax(0,560px)_minmax(0,1fr)] lg:gap-20">
+        <div className="w-full max-w-[1400px] lg:px-10">
+        <div className="grid items-start gap-20 lg:grid-cols-[minmax(0,600px)_minmax(0,1fr)] lg:gap-16">
           <motion.div
             className="flex flex-col gap-10"
             initial={{ opacity: 0, x: -36 }}
@@ -278,7 +278,7 @@ const Hero = () => {
           </motion.div>
 
           <motion.div
-            className="relative flex h-[65vh] w-full max-w-[600px] justify-center lg:h-[90vh]"
+            className="relative flex h-[95vh] w-full max-h-[850px] justify-center"
             initial={{ opacity: 0, x: 36 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.8, ease: 'easeOut' }}
@@ -291,7 +291,7 @@ const Hero = () => {
               </defs>
             </svg>
 
-            <div className="relative h-full w-full max-w-[560px]">
+            <div className="relative h-full w-full max-w-[700px]">
               <div
                 className="relative h-full w-full overflow-hidden bg-white/40 shadow-[0_30px_80px_rgba(168,85,247,0.25)] ring-1 ring-purple-200/40 backdrop-blur"
                 style={{ clipPath: clipPathUrl, WebkitClipPath: clipPathUrl }}
