@@ -165,7 +165,9 @@ const Hero = () => {
         <div className="absolute top-1/4 -right-40 h-[420px] w-[420px] rounded-full bg-purple-300/30 blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-6 pb-16 pt-20 lg:px-16">
+      {/* Centered container that accounts for side navigation */}
+      <div className="relative w-full h-full flex justify-center">
+        <div className="w-full max-w-7xl px-6 pb-16 pt-20 lg:px-16">
         <div className="grid items-start gap-16 lg:grid-cols-[minmax(0,560px)_minmax(0,1fr)] lg:gap-20">
           <motion.div
             className="flex flex-col gap-10"
@@ -431,6 +433,7 @@ const Hero = () => {
               </div>
             </div>
           </motion.div>
+        </div>
         </div>
       </div>
     </section>

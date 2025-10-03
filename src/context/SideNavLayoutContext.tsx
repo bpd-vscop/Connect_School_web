@@ -1,33 +1,34 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import type { Dispatch, SetStateAction } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 interface SideNavLayoutContextValue {
   offset: number;
-  topbarActive: boolean;
-  setOffset: Dispatch<SetStateAction<number>>;
-  setTopbarActive: Dispatch<SetStateAction<boolean>>;
+  setOffset: (offset: number) => void;
+  isExpanded: boolean;
+  setIsExpanded: (expanded: boolean) => void;
 }
 
 const SideNavLayoutContext = createContext<SideNavLayoutContextValue | undefined>(undefined);
 
-export const SideNavLayoutProvider = ({ children }: { children: React.ReactNode }) => {
+export const SideNavLayoutProvider = ({ children }: { children: ReactNode }) => {
   const [offset, setOffset] = useState(0);
-  const [topbarActive, setTopbarActive] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
+  // Update CSS custom property whenever offset changes
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.style.setProperty('--side-nav-offset', offset + 'px');
     }
   }, [offset]);
 
-  const value = useMemo(
-    () => ({ offset, topbarActive, setOffset, setTopbarActive }),
-    [offset, topbarActive]
-  );
-
   return (
-    <SideNavLayoutContext.Provider value={value}>
+    <SideNavLayoutContext.Provider
+      value={{
+        offset,
+        setOffset,
+        isExpanded,
+        setIsExpanded,
+      }}
+    >
       {children}
     </SideNavLayoutContext.Provider>
   );
@@ -35,10 +36,8 @@ export const SideNavLayoutProvider = ({ children }: { children: React.ReactNode 
 
 export const useSideNavLayout = () => {
   const context = useContext(SideNavLayoutContext);
-
-  if (!context) {
-    throw new Error('useSideNavLayout must be used within SideNavLayoutProvider');
+  if (context === undefined) {
+    throw new Error('useSideNavLayout must be used within a SideNavLayoutProvider');
   }
-
   return context;
 };

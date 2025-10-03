@@ -1,10 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { SideNavLayoutProvider } from './context/SideNavLayoutContext'
 import './index.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <SideNavLayoutProvider>
+      <App />
+    </SideNavLayoutProvider>
   </StrictMode>,
 )
