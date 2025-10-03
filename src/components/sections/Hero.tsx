@@ -167,7 +167,7 @@ const Hero = () => {
 
       {/* Centered container that accounts for side navigation */}
       <div className="relative w-full h-full flex justify-center">
-        <div className="w-full max-w-7xl px-6 pb-16 pt-20 lg:px-16">
+        <div className="w-full max-w-7xl pb-10 pt-10 ">
         <div className="grid items-start gap-16 lg:grid-cols-[minmax(0,560px)_minmax(0,1fr)] lg:gap-20">
           <motion.div
             className="flex flex-col gap-10"
