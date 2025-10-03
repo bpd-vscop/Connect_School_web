@@ -74,9 +74,9 @@ const slides: Slide[] = [
 ];
 
 const socialLinks = [
-  { id: 'facebook', icon: Facebook, label: 'Facebook' },
-  { id: 'instagram', icon: Instagram, label: 'Instagram' },
-  { id: 'linkedin', icon: Linkedin, label: 'LinkedIn' },
+  { id: 'facebook', icon: Facebook, label: 'Facebook', colorClass: 'text-gray-700 hover:bg-blue-600 hover:text-white' },
+  { id: 'instagram', icon: Instagram, label: 'Instagram', colorClass: 'text-gray-700 hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-500 hover:text-white' },
+  { id: 'linkedin', icon: Linkedin, label: 'LinkedIn', colorClass: 'text-gray-700 hover:bg-blue-700 hover:text-white' },
 ];
 
 const supportAvatars = [
@@ -303,14 +303,16 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.45 }}
               >
-                {socialLinks.map(({ id, icon: Icon, label }) => (
+                {socialLinks.map(({ id, icon: Icon, label, colorClass }) => (
                   <motion.button
                     key={id}
                     /*
                       Individual icon button size: h-9 w-9 (36px x 36px)
                       Icon size inside: h-4 w-4 (16px x 16px)
+                      Default: transparent background with gray icon and gray border circle
+                      Hover: colored background with white icon, border disappears
                     */
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-100 text-purple-600 transition-colors hover:bg-purple-600 hover:text-white"
+                    className={`flex h-9 w-9 items-center justify-center rounded-full bg-transparent border border-gray-300 hover:border-transparent transition-all duration-300 ${colorClass}`}
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.94 }}
                     aria-label={label}
