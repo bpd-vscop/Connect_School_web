@@ -5,38 +5,38 @@ const Features = () => {
   const features = [
     {
       icon: Award,
-      title: "Tuteurs certifiés",
-      description: "Top écoles, profils vérifiés, badges de certification.",
+      title: "Professeurs qualifiés",
+      description: "Enseignants diplômés et expérimentés, sélectionnés pour leur expertise pédagogique.",
       color: "from-purple-500 to-lavender-400"
     },
     {
       icon: Clock,
-      title: "Appariement rapide",
-      description: "Un premier contact sous 24h garanti.",
+      title: "Disponibilité rapide",
+      description: "Mise en relation avec un professeur sous 24h selon vos besoins.",
       color: "from-lavender-500 to-purple-400"
     },
     {
       icon: Monitor,
-      title: "En ligne & à domicile",
-      description: "Flexibilité selon votre besoin et votre emploi du temps.",
+      title: "Cours flexibles",
+      description: "À domicile ou en ligne, en individuel ou en petits groupes selon votre préférence.",
       color: "from-purple-600 to-lavender-500"
     },
     {
       icon: Heart,
-      title: "Accompagnement personnalisé",
-      description: "Objectifs clairs, suivi régulier, progression mesurée.",
+      title: "Suivi personnalisé",
+      description: "Méthodes adaptées à chaque élève avec communication régulière aux parents.",
       color: "from-lavender-400 to-purple-500"
     },
     {
       icon: Shield,
-      title: "Paiement sécurisé",
-      description: "Paiement hors ligne en toute sécurité après le cours.",
+      title: "Service de confiance",
+      description: "Paiement après le cours, transparence totale et satisfaction garantie.",
       color: "from-purple-500 to-lavender-600"
     },
     {
       icon: TrendingUp,
-      title: "Résultats prouvés",
-      description: "95% de satisfaction client et amélioration des notes.",
+      title: "Résultats concrets",
+      description: "Amélioration des notes et réussite scolaire de nos élèves.",
       color: "from-lavender-600 to-purple-400"
     }
   ];
@@ -81,14 +81,15 @@ const Features = () => {
           className="text-center mb-16 max-w-3xl mx-auto"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            Découvrez le futur de l'éducation avec{' '}
+            Pourquoi choisir{' '}
             <span className="bg-gradient-to-r from-purple-600 to-lavender-500 bg-clip-text text-transparent">
               Connect School
-            </span>
+            </span>{' '}
+            pour vos enfants ?
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed">
-            Une plateforme moderne qui révolutionne l'apprentissage grâce à des professeurs d'exception 
-            et une technologie de pointe.
+            Un service de soutien scolaire de qualité qui accompagne les familles avec des professeurs 
+            expérimentés et des méthodes pédagogiques éprouvées.
           </p>
         </motion.div>
 
@@ -163,7 +164,12 @@ const Features = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-lavender-500 text-white rounded-xl font-medium ml-6"
+              className="px-6 py-3 bg-gradient-to-r  bg-black to-gray-900 text-white rounded-full font-medium ml-6"
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('contact');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
             >
               Commencer maintenant
             </motion.button>

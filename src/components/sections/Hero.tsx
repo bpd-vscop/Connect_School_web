@@ -8,7 +8,6 @@ import {
   Heart,
   Instagram,
   Linkedin,
-  Youtube,
 } from 'lucide-react';
 
 const AsteriskIcon = () => (
@@ -31,15 +30,15 @@ const slides: Slide[] = [
     image:
       'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80',
     profile: {
-      name: 'Ronald Richards',
-      note: 'Using the Logitech mouse has been a game changer for my productivity.',
+      name: 'Ahmed Benali',
+      note: 'Les cours particuliers ont transformé ma compréhension des mathématiques.',
     },
     product: {
-      title: 'MX Pro mouse',
-      subtitle: 'Precision ergonomic control',
-      desc: 'Designed for all day learning sessions with customizable macros and seamless device pairing.',
+      title: 'Cours Particuliers',
+      subtitle: 'Accompagnement personnalisé',
+      desc: 'Méthodes adaptées à chaque élève avec un suivi régulier et des objectifs clairs.',
     },
-    pills: ['Quality', 'High Precision Sensor', 'Ergonomic Design', 'Long Battery Life'],
+    pills: ['Qualité', 'Suivi Personnalisé', 'Méthodes Adaptées', 'Résultats Garantis'],
   },
   {
     id: 2,
@@ -47,29 +46,29 @@ const slides: Slide[] = [
       'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1400&q=80',
     profile: {
       name: 'Fatima El Mansouri',
-      note: 'The blended classes made remote collaboration effortless for our students.',
+      note: 'Les cours hybrides ont facilité l\'apprentissage de ma fille.',
     },
     product: {
-      title: 'Smart Class Hub',
-      subtitle: 'Hybrid classroom kit',
-      desc: 'Bring every learner into the conversation with live annotations, quick polls, and shared boards.',
+      title: 'Cours Hybrides',
+      subtitle: 'Présentiel et en ligne',
+      desc: 'Flexibilité totale avec des horaires adaptés à votre emploi du temps.',
     },
-    pills: ['Online Ready', 'Adaptive Tools', 'AI Insights'],
+    pills: ['En Ligne', 'À Domicile', 'Horaires Flexibles'],
   },
   {
     id: 3,
     image:
       'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1400&q=80',
     profile: {
-      name: 'Sarah Thompson',
-      note: 'Creative briefs and instant feedback keep our learners motivated.',
+      name: 'Sarah Dubois',
+      note: 'La préparation aux examens m\'a donné confiance en moi.',
     },
     product: {
-      title: 'Creative Studio',
-      subtitle: 'Project based learning',
-      desc: 'Launch immersive challenges with shared workspaces and peer review built in.',
+      title: 'Préparation Examens',
+      subtitle: 'Réussite assurée',
+      desc: 'Préparation intensive avec des professeurs experts dans chaque matière.',
     },
-    pills: ['Comfort First', 'Precision Tools'],
+    pills: ['Expertise', 'Méthodes Éprouvées'],
   },
 ];
 
@@ -177,7 +176,7 @@ const Hero = () => {
             <div className="flex items-end justify-between gap-4">
               <div className="inline-flex items-center gap-3 rounded-full bg-purple-100/60 px-4 py-2 text-xs font-semibold text-purple-600">
                 <span className="inline-block h-2 w-2 rounded-full bg-purple-500" />
-                Live learning that feels personal
+                Apprentissage personnalisé en direct
               </div>
 
               <div className="relative flex items-end gap-4">
@@ -230,16 +229,16 @@ const Hero = () => {
 
             <div className="space-y-6">
               <h1 className="text-4xl font-semibold leading-snug text-gray-900 sm:text-5xl lg:text-[56px] lg:leading-[1.05]">
-                Ultimate Learning:
+                Cours de soutien :
                 <br />
-                Elevate your <span className="text-purple-600">academic</span> and
+                Élevez votre <span className="text-purple-600">niveau</span> du
                 <br />
-                <span className="text-purple-600">creative</span> experience
+                <span className="text-purple-600">primaire</span> à l'université
               </h1>
 
               <p className="max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
-                Connect School blends curated resources, coaching, and collaborative workspaces into one flow. Discover
-                tools that adapt to every learner and keep momentum high.
+                Cours particuliers, aide aux devoirs, renforcement dans toutes les matières et préparation aux examens. 
+                Nos enseignants passionnés et qualifiés utilisent des méthodes adaptées à chaque élève, avec un suivi régulier en lien avec les parents.
               </p>
             </div>
 
@@ -249,7 +248,7 @@ const Hero = () => {
                 className="group inline-flex items-center gap-3 rounded-full border border-purple-200/60 bg-white/80 px-6 py-3 text-sm font-medium text-purple-700 shadow-sm transition-colors hover:border-purple-400 hover:text-purple-800"
                 whileHover={{ x: 6 }}
               >
-                Explore features
+                Découvrir nos services
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-600 text-white transition-transform group-hover:translate-x-1">
                   <ArrowRight className="h-4 w-4" />
                 </span>
@@ -257,20 +256,20 @@ const Hero = () => {
 
               <div className="flex -space-x-3">
                 {supportAvatars.map((src) => (
-                  <img key={src} src={src} alt="Learner" className="h-10 w-10 rounded-full border-2 border-white object-cover" />
+                  <img key={src} src={src} alt="Élève" className="h-10 w-10 rounded-full border-2 border-white object-cover" />
                 ))}
               </div>
               <div className="space-y-1 text-sm">
-                <div className="font-semibold text-gray-900">24 coaches ready today</div>
-                <p className="text-gray-500">Join a live onboarding session in less than 10 minutes.</p>
+                <div className="font-semibold text-gray-900">Notre objectif : aider chaque élève à progresser</div>
+                <p className="text-gray-500">Améliorer ses notes et réussir avec des horaires flexibles.</p>
               </div>
 
               <motion.button
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-purple-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-500/30 transition-transform hover:translate-y-[-2px]"
+                className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:bg-gray-900 hover:translate-y-[-2px]"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
-                Join now
+                Commencer maintenant
                 <ArrowRight className="h-4 w-4" />
               </motion.button>
             </div>
@@ -303,38 +302,54 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.45 }}
               >
-                {socialLinks.map(({ id, icon: Icon, label, colorClass }) => (
-                  <motion.button
-                    key={id}
-                    /*
-                      Individual icon button size: h-9 w-9 (36px x 36px)
-                      Icon size inside: h-4 w-4 (16px x 16px)
-                      Default: transparent background with gray icon and gray border circle
-                      Hover: colored background with white icon, border disappears
-                    */
-                    className={`flex h-9 w-9 items-center justify-center rounded-full bg-transparent border border-gray-300 hover:border-transparent transition-all duration-300 ${colorClass}`}
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.94 }}
-                    aria-label={label}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </motion.button>
-                ))}
+                {/** Social click handler */}
+                {/** Open links in a new tab; LinkedIn refreshes the page */}
+                {/** Placed inline to avoid external dependencies */}
+                {socialLinks.map(({ id, icon: Icon, label, colorClass }) => {
+                  const handleClick = () => {
+                    if (id === 'facebook') {
+                      window.open('https://www.facebook.com/share/14JicTTSyP4/', '_blank', 'noopener,noreferrer');
+                    } else if (id === 'instagram') {
+                      window.open('https://www.instagram.com/connectschool.ma?igsh=MTIwM3Q4MWJtcnVjMQ==', '_blank', 'noopener,noreferrer');
+                    } else if (id === 'linkedin') {
+                      window.location.reload();
+                    }
+                  };
+                  return (
+                    <motion.button
+                      key={id}
+                      /*
+                        Individual icon button size: h-9 w-9 (36px x 36px)
+                        Icon size inside: h-4 w-4 (16px x 16px)
+                        Default: transparent background with gray icon and gray border circle
+                        Hover: colored background with white icon, border disappears
+                      */
+                      className={`flex h-9 w-9 items-center justify-center rounded-full bg-transparent border border-gray-300 hover:border-transparent transition-all duration-300 ${colorClass}`}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.94 }}
+                      aria-label={label}
+                      onClick={handleClick}
+                    >
+                      <Icon className="h-4 w-4" />
+                    </motion.button>
+                  );
+                })}
               </motion.div>
 
               {/*
-                Sign up button - positioned at top right
-                Position: right-6 (horizontal from right), top-[-20px] (vertical - negative moves up outside frame)
-                Button size: px-7 (horizontal padding), py-3 (vertical padding)
-                Text size: text-sm
+                Bouton d'inscription - positionné en haut à droite
+                Position: right-6 (horizontal depuis la droite), top-[-20px] (vertical - négatif déplace vers le haut hors du cadre)
+                Taille du bouton: px-7 (padding horizontal), py-3 (padding vertical)
+                Taille du texte: text-sm
               */}
               <motion.button
-                className="absolute right-6 top-[6px] z-40 rounded-[30px] bg-gradient-to-r from-purple-600 to-purple-500 px-9 py-6 text-sm font-semibold text-white shadow-lg shadow-purple-500/30"
+                className="absolute right-4 top-[14px] z-40 rounded-[30px] bg-gradient-to-r from-purple-600 to-purple-500 px-8 py-5 text-sm font-semibold text-white shadow-lg shadow-purple-500/30"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.45 }}
+                onClick={() => window.location.reload()}
               >
-                Sign up
+                S'inscrire
               </motion.button>
 
               <div
@@ -395,7 +410,7 @@ const Hero = () => {
                     </motion.div>
 
                     <motion.div
-                      className="absolute left-6 bottom-6 max-w-[300px] rounded-2xl border border-white/60 bg-white/92 p-4 shadow-xl"
+                      className="absolute left-6 bottom-6 max-w-[300px] rounded-2xl border border-white/40 bg-white/30 backdrop-blur-md p-4 shadow-xl shadow-purple-500/20"
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.15 }}
@@ -413,12 +428,12 @@ const Hero = () => {
                       <div className="mt-3 overflow-hidden rounded-xl border border-purple-100">
                         <img
                           src={thumbUrl(slides[current].image, 360)}
-                          alt="Preview"
+                          alt="Aperçu"
                           className="h-[120px] w-full object-cover"
                         />
                         <div className="flex items-center justify-between bg-white/90 px-3 py-2">
                           <button className="rounded-full bg-purple-600 px-3 py-1 text-[11px] font-semibold text-white">
-                            Buy now
+                            Réserver
                           </button>
                           <button className="flex h-7 w-7 items-center justify-center rounded-full bg-purple-100 text-purple-600">
                             <Heart className="h-4 w-4" />
@@ -434,7 +449,7 @@ const Hero = () => {
                     onClick={handlePrev}
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white/90 text-purple-600 shadow-lg shadow-purple-500/20 transition-colors hover:bg-purple-600 hover:text-white"
                     whileTap={{ scale: 0.95 }}
-                    aria-label="Previous slide"
+                    aria-label="Diapositive précédente"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </motion.button>
@@ -442,7 +457,7 @@ const Hero = () => {
                     onClick={handleNext}
                     className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white/90 text-purple-600 shadow-lg shadow-purple-500/20 transition-colors hover:bg-purple-600 hover:text-white"
                     whileTap={{ scale: 0.95 }}
-                    aria-label="Next slide"
+                    aria-label="Diapositive suivante"
                   >
                     <ChevronRight className="h-5 w-5" />
                   </motion.button>

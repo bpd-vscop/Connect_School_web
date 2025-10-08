@@ -12,6 +12,7 @@
   "dependencies": {
     "@anthropic-ai/claude-code": "^2.0.1",
     "@google/gemini-cli": "^0.6.1",
+    "emailjs-com": "^3.2.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.539.0",
     "react": "^19.1.1",

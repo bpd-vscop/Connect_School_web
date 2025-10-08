@@ -8,7 +8,7 @@ const Testimonials = () => {
       role: "Parent d'élève",
       avatar: "👩‍💼",
       rating: 5,
-      text: "La plateforme est excellente et très intuitive. Mon fils a progressé de manière impressionnante en mathématiques grâce à son professeur. Je recommande vivement !",
+      text: "Mon fils a progressé de manière impressionnante en mathématiques grâce à son professeur. Je recommande vivement !",
       highlight: "Progression impressionnante"
     },
     {
@@ -40,7 +40,7 @@ const Testimonials = () => {
       role: "Parent d'élève",
       avatar: "👩‍🔬",
       rating: 5,
-      text: "Excellente expérience ! La plateforme facilite la communication avec le professeur. Mon fils a retrouvé sa motivation pour les études.",
+      text: "Excellente expérience ! Connect School facilite la communication avec le professeur. Mon fils a retrouvé sa motivation pour les études.",
       highlight: "Excellente expérience"
     },
     {
@@ -76,7 +76,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-lavender-50 to-white relative overflow-hidden">
+    <section id="testimonials" className="py-20 bg-gradient-to-br from-purple-50 via-lavender-50 to-white relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-purple-200/30 to-lavender-200/30 rounded-full blur-3xl"></div>

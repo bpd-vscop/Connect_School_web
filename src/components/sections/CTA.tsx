@@ -107,7 +107,7 @@ const CTA = () => {
               className="text-xl text-white/90 leading-relaxed max-w-2xl mx-auto"
             >
               Commencez dès aujourd'hui avec un cours d'essai gratuit. 
-              Nos professeurs certifiés sont là pour accompagner votre enfant vers la réussite.
+              Connect School vous propose des professeurs qualifiés pour accompagner votre enfant vers la réussite.
             </motion.p>
 
             {/* Benefits Grid */}
@@ -149,22 +149,27 @@ const CTA = () => {
                   boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="group px-8 py-4 bg-white text-purple-600 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 flex items-center space-x-2 shadow-2xl"
+                className="group px-8 py-4 bg-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 flex items-center space-x-2 shadow-2xl"
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
               >
                 <span>Réserver un cours d'essai gratuit</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
 
-              <motion.button
+           {/*    <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white hover:text-purple-600 transition-all duration-300"
               >
                 Découvrir nos professeurs
-              </motion.button>
+              </motion.button> */}
             </motion.div>
 
-            {/* Trust Indicators */}
+            {/* Trust Indicators 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -174,14 +179,14 @@ const CTA = () => {
             >
               <p className="text-white/70 text-sm mb-4">Ils nous font confiance :</p>
               <div className="flex items-center justify-center space-x-8 opacity-60">
-                {/* Placeholder for trust logos */}
+               */} {/* Placeholder for trust logos 
                 <div className="w-20 h-8 bg-white/20 rounded"></div>
                 <div className="w-24 h-8 bg-white/20 rounded"></div>
                 <div className="w-16 h-8 bg-white/20 rounded"></div>
                 <div className="w-28 h-8 bg-white/20 rounded"></div>
               </div>
             </motion.div>
-
+*/}
             {/* Bottom Note */}
             <motion.p
               initial={{ opacity: 0 }}

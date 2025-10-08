@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Instagram, Globe, X as XIcon } from "lucide-react";
+import { Instagram, Facebook, ChevronUp } from "lucide-react";
+import type React from "react";
 
 /**
  * Sliding-door nav with directional control + hero stretch:
@@ -63,17 +64,18 @@ const RETURN_START  = 0.16; // door begins to slide back in only below 16%
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 const NAV_ITEMS = [
-  { name: "Home", href: "#home" },
-  { name: "Shops", href: "#shops" },
-  { name: "Collections", href: "#collections" },
-  { name: "About us", href: "#about" },
+  { name: "Accueil", href: "#home" },
+  { name: "À propos", href: "#about" },
+ // { name: "Services", href: "#features" },
+  { name: "Témoignages", href: "#testimonials" },
   { name: "Contact", href: "#contact" },
 ];
 
+// Order: Instagram → Facebook → Up-arrow head; hide language changer
 const SOCIALS = [
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: XIcon,     label: "X",         href: "#" },
-  { icon: Globe,     label: "Website",   href: "#" },
+  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/connectschool.ma?igsh=MTIwM3Q4MWJtcnVjMQ==" },
+  { icon: Facebook,  label: "Facebook",  href: "https://www.facebook.com/share/14JicTTSyP4/" },
+  { icon: ChevronUp, label: "Top",       href: "#top" },
 ];
 
 export default function SideNavigation() {
@@ -330,6 +332,7 @@ export default function SideNavigation() {
                 <li key={item.name}>
                   <a
                     href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
                     className={`block text-[15px] ${
                       idx === 0 ? "text-purple-600 font-bold italic" : "text-gray-600"
                     }`}
@@ -377,6 +380,7 @@ export default function SideNavigation() {
                     <li key={item.name}>
                       <a
                         href={item.href}
+                        onClick={(e) => handleNavClick(e, item.href)}
                         className={`text-sm px-3 py-2 rounded-full ${
                           idx === 0
                             ? "text-purple-600 font-bold italic bg-purple-50"
@@ -391,27 +395,33 @@ export default function SideNavigation() {
 
                 {/* Socials + actions */}
                 <div className="flex items-center gap-3 ml-2">
-                  {SOCIALS.map((s) => (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      aria-label={s.label}
-                      className="w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-600 hover:text-purple-600 hover:shadow-sm grid place-items-center transition-all"
-                    >
-                      <s.icon className="w-4 h-4" />
-                    </a>
-                  ))}
+                  {SOCIALS.map((s) => {
+                    const isExternal = s.href.startsWith("http");
+                    const handleClick = () => {
+                      if (!isExternal && s.href === "#top") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    };
+                    return (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        aria-label={s.label}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                        onClick={!isExternal ? handleClick : undefined}
+                        className="w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-600 hover:text-purple-600 hover:shadow-sm grid place-items-center transition-all"
+                      >
+                        <s.icon className="w-4 h-4" />
+                      </a>
+                    );
+                  })}
                   <a
-                    href="#join"
-                    className="px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-semibold ui hover:bg-purple-700"
+                    href="tel:+212612345678"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white text-sm font-semibold ui  hover:bg-gray-900"
                   >
-                    Join
-                  </a>
-                  <a
-                    href="#signup"
-                    className="px-4 py-2 rounded-full bg-gray-900 text-white text-sm font-semibold ui hover:bg-black"
-                  >
-                    Sign up
+                    <span>Appelez-nous:</span>
+                    <span className="opacity-90">+212 5 37 60 45 21</span>
                   </a>
                 </div>
               </motion.div>
@@ -422,3 +432,19 @@ export default function SideNavigation() {
     </>
   );
 }
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    e.preventDefault();
+    if (href === "#home") {
+      // As requested: refresh the page on Accueil
+      window.location.reload();
+      return;
+    }
+    const id = href.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };

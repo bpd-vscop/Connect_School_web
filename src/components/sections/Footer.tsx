@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { BookOpen, Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
 
 const Footer = () => {
   const footerLinks = {
@@ -30,10 +30,10 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: '#' },
-    { name: 'Twitter', icon: Twitter, href: '#' },
-    { name: 'Instagram', icon: Instagram, href: '#' },
-    { name: 'LinkedIn', icon: Linkedin, href: '#' },
+    { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/share/14JicTTSyP4/' },
+    //  { name: 'Twitter', icon: Twitter, href: '#' },
+    { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/connectschool.ma?igsh=MTIwM3Q4MWJtcnVjMQ==' },
+    // { name: 'LinkedIn', icon: Linkedin, href: '#' },
   ];
 
   return (
@@ -70,9 +70,9 @@ const Footer = () => {
                 viewport={{ once: true }}
                 className="text-gray-400 leading-relaxed max-w-md"
               >
-                La plateforme de référence pour le soutien scolaire au Maroc. 
-                Connectez-vous avec les meilleurs professeurs certifiés pour 
-                un apprentissage personnalisé et efficace.
+                Le service de référence pour le soutien scolaire au Maroc. 
+                Connect School vous met en relation avec les meilleurs professeurs 
+                pour un accompagnement personnalisé et des résultats garantis.
               </motion.p>
 
               <motion.div
@@ -84,15 +84,15 @@ const Footer = () => {
               >
                 <div className="flex items-center space-x-3 text-gray-400">
                   <Mail className="w-5 h-5 text-purple-400" />
-                  <span>contact@connectschool.ma</span>
+                  <span>contact@netschool.ma</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400">
                   <Phone className="w-5 h-5 text-purple-400" />
-                  <span>+212 6 XX XX XX XX</span>
+                  <span>+212 6 06 01 02 11 / +212 5 37 60 45 21</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400">
                   <MapPin className="w-5 h-5 text-purple-400" />
-                  <span>Casablanca, Maroc</span>
+                  <span>Imm 64, Appt 6 Av Moulay Ali Chrif Témara, Maroc</span>
                 </div>
               </motion.div>
             </div>
@@ -162,7 +162,7 @@ const Footer = () => {
             </motion.div>
           </div>
 
-          {/* Newsletter Section */}
+          {/* Newsletter Section 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -190,7 +190,7 @@ const Footer = () => {
                 </motion.button>
               </div>
             </div>
-          </motion.div>
+          </motion.div>*/}
         </div>
 
         {/* Bottom Bar */}
@@ -204,7 +204,7 @@ const Footer = () => {
               viewport={{ once: true }}
               className="text-gray-400"
             >
-              © 2024 Connect School. Tous droits réservés.
+              © 2025 Connect School. Tous droits réservés. | Powered by <a href="https://www.bpd.ma/" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-lavender-500 transition-colors duration-200">BP. Digital</a>
             </motion.div>
 
             {/* Social Links */}
@@ -219,6 +219,8 @@ const Footer = () => {
                 <motion.a
                   key={social.name}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-br hover:from-purple-600 hover:to-lavender-500 rounded-lg flex items-center justify-center transition-all duration-200"
