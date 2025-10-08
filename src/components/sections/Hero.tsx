@@ -176,7 +176,7 @@ const Hero = () => {
             <div className="flex items-end justify-between gap-4">
               <div className="inline-flex items-center gap-3 rounded-full bg-purple-100/60 px-4 py-2 text-xs font-semibold text-purple-600">
                 <span className="inline-block h-2 w-2 rounded-full bg-purple-500" />
-                Apprentissage personnalisé en direct
+                Apprentissage personnalisé
               </div>
 
               <div className="relative flex items-end gap-4">

@@ -85,6 +85,7 @@ export default function SideNavigation() {
 
   const [progressPx, setProgressPx] = useState(0); // px scrolled within hero
   const [isDown, setIsDown] = useState(true);      // scroll direction
+  const [activeHref, setActiveHref] = useState<string>("#home");
 
   // Refs to avoid exhaustive-deps and stale closures
   const heroHeightRef = useRef(0);
@@ -198,6 +199,28 @@ export default function SideNavigation() {
         prevTopbarRef.current = shouldTopbar;
 
         setTopbar(shouldTopbar);
+
+        // --- Scrollspy based on viewport center ---
+        const centerViewportY = window.innerHeight * 0.5;
+        let bestHref = "#home";
+        let bestDist = Infinity;
+        for (const item of NAV_ITEMS) {
+          const id = item.href.replace("#", "");
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          const within = rect.top <= centerViewportY && rect.bottom >= centerViewportY;
+          const dist = Math.abs(centerViewportY - (rect.top + rect.height / 2));
+          if (within) {
+            bestHref = item.href;
+            bestDist = 0;
+            break;
+          } else if (dist < bestDist) {
+            bestHref = item.href;
+            bestDist = dist;
+          }
+        }
+        setActiveHref(bestHref);
       });
     };
 
@@ -328,27 +351,30 @@ export default function SideNavigation() {
 
             {/* Menu list */}
             <ul className="ui flex flex-col items-center gap-6 pt-64">
-              {NAV_ITEMS.map((item, idx) => (
+              {NAV_ITEMS.map((item) => {
+                const isActive = item.href === activeHref;
+                return (
                 <li key={item.name}>
                   <a
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
                     className={`block text-[15px] ${
-                      idx === 0 ? "text-purple-600 font-bold italic" : "text-gray-600"
+                      isActive ? "text-purple-600 font-bold italic" : "text-gray-600"
                     }`}
                   >
-                    <span
-                      className={`inline-block rounded-full transition-all ${
-                        idx === 0
-                          ? "bg-purple-50 px-4 py-2"
-                          : "px-4 py-2 hover:bg-gray-50 hover:text-gray-900"
-                      }`}
-                    >
-                      {item.name}
+                    <span className="relative inline-block rounded-full px-4 py-2">
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-active-indicator"
+                          className="absolute inset-0 rounded-full bg-purple-50"
+                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        />
+                      )}
+                      <span className={`${isActive ? "relative" : ""}`}>{item.name}</span>
                     </span>
                   </a>
                 </li>
-              ))}
+              );})}
             </ul>
           </div>
 
@@ -376,21 +402,31 @@ export default function SideNavigation() {
 
                 {/* Menu */}
                 <ul className="flex items-center gap-2 ui">
-                  {NAV_ITEMS.map((item, idx) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        onClick={(e) => handleNavClick(e, item.href)}
-                        className={`text-sm px-3 py-2 rounded-full ${
-                          idx === 0
-                            ? "text-purple-600 font-bold italic bg-purple-50"
-                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                        }`}
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
+                  {NAV_ITEMS.map((item) => {
+                    const isActive = item.href === activeHref;
+                    return (
+                      <li key={item.name} className="relative">
+                        <a
+                          href={item.href}
+                          onClick={(e) => handleNavClick(e, item.href)}
+                          className={`relative text-sm px-3 py-2 rounded-full ${
+                            isActive
+                              ? "text-purple-600 font-bold italic"
+                              : "text-gray-700 hover:text-gray-900"
+                          }`}
+                        >
+                          {isActive && (
+                            <motion.span
+                              layoutId="nav-active-indicator"
+                              className="absolute inset-0 rounded-full bg-purple-50"
+                              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                            />
+                          )}
+                          <span className="relative">{item.name}</span>
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
 
                 {/* Socials + actions */}
